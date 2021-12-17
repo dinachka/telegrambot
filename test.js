@@ -2,7 +2,7 @@
 // function to calculate local time
 // in a different city
 // given the city's UTC offset
-function calcTime(city, offset) {
+function calcTime(city) {
   // create Date object for current location
   const d = new Date();
 
@@ -14,19 +14,19 @@ function calcTime(city, offset) {
   // create new Date object for different city
   // using supplied offset
   const nd = new Date(utc + (3600000 * ('+3')));
-  // console.log(nd);
+  console.log(nd);
   // return time as a string
   return `The local time in ${city} is ${nd.toLocaleString()}`;
 }
 
 // get Bombay time
-console.log(calcTime('Bombay', '+5.5'));
+// console.log(calcTime('Bombay', '+5.5'));
 
-// get Singapore time
-console.log(calcTime('Singapore', '+8'));
+// // get Singapore time
+// console.log(calcTime('Singapore', '+8'));
 
-// get London time
-console.log(calcTime('London', '+3'));
+// // get London time
+// console.log(calcTime('London', '+3'));
 
 // Here, the calcTime() function accepts a city name and its UTC offset (in hours). It then internally performs all the calculations described above, and returns a string containing the local time in the named city.
 
@@ -41,7 +41,8 @@ const run = () => {
   // setInterval(() => {
     const d = new Date();
     const utc = d.getTime() + (d.getTimezoneOffset() * 60000);
-    return new Date(utc + (3600000 * ('+3'))).toLocaleString();
+    const date = new Date(utc + (3600000 * ('+3'))).toLocaleString();
+    return date.slice(12, -6)
     // return `${MoscowTimeZone}:${new Date().getMinutes()}`;
 
     // if (notes[i].time === curDate) {
