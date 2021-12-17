@@ -35,7 +35,7 @@ const start = () => {
     const { reminderText } = msg;
     const { text } = msg;
     const chatId = msg.chat.id;
-    const { username } = msg.chat;
+    const { username } = msg.chat
     console.log(msg);
 
     if (text === '/start') {
