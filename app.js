@@ -34,10 +34,11 @@ const start = () => {
       const randomNum = Math.floor(Math.random() * 10);
       chats[chatId] = randomNum;
       await bot.sendMessage(chatId, 'отгадывай', gameOptions);
-    } catch (err) {
+    }
+     catch (err) {
       return bot.sendMessage(chatId, 'произошла ошибка');
     }
-    return bot.sendMessage(chatId, 'произошла ошибка');
+    // return bot.sendMessage(chatId, 'произошла ошибка');
 
   };
   bot.on('message', (msg) => {
