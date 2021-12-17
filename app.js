@@ -1,27 +1,32 @@
 // const { Telegraf, Markup } = require('telegraf')
 require('dotenv').config();
-// const text = require('./const');
-// const bot = new Telegraf(process.env.BOT_TOKEN);
-// bot.start((ctx) => ctx.reply(`привет, ${ctx.message.from.first_name ? ctx.message.from.first_name : 'незнакомец'}!`))
-// bot.help((ctx) => ctx.reply(text.commands));
-
-// bot.launch()
-
-// // Enable graceful stop
-// process.once('SIGINT', () => bot.stop('SIGINT'))
-// process.once('SIGTERM', () => bot.stop('SIGTERM'))
+const schedule = require('node-schedule');
 
 const TelegramApi = require('node-telegram-bot-api');
 const { gameOptions, againOptions } = require('./options');
 
-// const token = process.env.BOT_TOKEN;
 const chats = {};
 const bot = new TelegramApi(process.env.BOT_TOKEN, { polling: true });
+// function sendTime(time, msg, text) {
+//   new schedule.scheduleJob(
+//     {
+//       start: new Date(Date.now() + Number(time) * 1000 * 60),
+//       end: new Date(new Date(Date.now() + Number(time) * 1000 * 60 + 1000)),
+//       rule: '*/1 * * * * *',
+//     },
+//     (() => {
+//       bot.sendMessage(msg.chat.id, text);
+//     }),
+//   );
+// }
+
 const start = () => {
   bot.setMyCommands([
     { command: '/start', description: 'приветствие' },
     { command: '/info', description: 'информация' },
     { command: '/igra', description: 'игра' },
+    { command: '/send', description: 'добавить напоминание' },
+
   ]);
   const startGame = async (chatId) => {
     try {
@@ -34,14 +39,13 @@ const start = () => {
       const randomNum = Math.floor(Math.random() * 10);
       chats[chatId] = randomNum;
       await bot.sendMessage(chatId, 'отгадывай', gameOptions);
-    }
-     catch (err) {
+    } catch (err) {
       return bot.sendMessage(chatId, 'произошла ошибка');
     }
-    // return bot.sendMessage(chatId, 'произошла ошибка');
-
+    // return bot.sendMessage(chatId, 'давай');
   };
   bot.on('message', (msg) => {
+    const { reminderText } = msg;
     const { text } = msg;
     const chatId = msg.chat.id;
     const { username } = msg.chat;
@@ -49,16 +53,21 @@ const start = () => {
     console.log(msg);
 
     if (text === '/start') {
-      return bot.sendMessage(chatId, `привет, ${username}`);
+      return bot.sendMessage(chatId, `приветик, ${username}`);
     }
     if (text === '/info') {
-      return bot.sendMessage(chatId, `привет, ${username}`);
+      return bot.sendMessage(chatId, `приветик, ${username}`);
     }
-
     if (text === '/igra') {
       return startGame(chatId);
     }
-    return bot.sendMessage(chatId, 'я тебя не понимаю');
+    if (text === '/send') {
+      // return bot.onText(/\/send/, (msgg) => {
+      //   sendTime(0.1, msgg, reminderText);
+      // });
+      return bot.sendMessage(chatId, `${username}, введите пожйлайста текст и время напоминания в формате [текст] в [часы:время]`);
+    }
+
   });
 
   bot.on('callback_query', (msg) => {
@@ -74,9 +83,35 @@ const start = () => {
     }
     return bot.sendMessage(chatId, `ты не угадал, я загадала цифру ${chats[chatId]}`, againOptions);
 
-    // bot.sendMessage(chatId, `ты выбрал цифру ${data}`);
+    // bot.sendMessage(chatId, `ты выбрал цифру ${ data }`);
     // console.log(msg);
   });
 };
 
 start();
+
+// const TelegramBot = require('node-telegram-bot-api');
+// const token = process.env.BOT_TOKEN;
+// const bot = new TelegramBot(token, { polling: true });
+
+const notes = [];
+
+bot.onText(/(.+) в (.+)/, (msg, match) => {
+  const userId = msg.from.id;
+  const text = match[1];
+  const time = match[2];
+
+  notes.push({ uid: userId, time, text });
+
+  bot.sendMessage(userId, `Отлично! Я обязательно напомню ${text} в ${time}`);
+});
+
+setInterval(() => {
+  for (let i = 0; i < notes.length; i++) {
+    const curDate = `${new Date().getHours()}:${new Date().getMinutes()}`;
+    if (notes[i].time === curDate) {
+      bot.sendMessage(notes[i].uid, `НАПОМИНАНИЕ!!!!!!!!!!!! вы должны ${notes[i].text} сейчас.`);
+      notes.splice(i, 1);
+    }
+  }
+}, 1000);
