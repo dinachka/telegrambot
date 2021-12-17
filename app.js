@@ -1,4 +1,5 @@
 // const { Telegraf, Markup } = require('telegraf')
+process.env.NTBA_FIX_319 = 1;
 require('dotenv').config();
 const schedule = require('node-schedule');
 
@@ -35,7 +36,7 @@ const start = () => {
     const { reminderText } = msg;
     const { text } = msg;
     const chatId = msg.chat.id;
-    const { username } = msg.chat
+    const { username } = msg.chat;
     console.log(msg);
 
     if (text === '/start') {
