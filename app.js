@@ -100,9 +100,9 @@ bot.onText(/(.+) в (.+)/, (msg, match) => {
 
 setInterval(() => {
   for (let i = 0; i < notes.length; i++) {
-    const MoscowTimeZone = tzDate.today().addHours(3);
-    // new Date().getHours() + 3;
-    console.log(MoscowTimeZone);
+    const d = new Date();
+    const utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+    const MoscowTimeZone = new Date(utc + (3600000 * ('+3')));
     const curDate = `${MoscowTimeZone}:${new Date().getMinutes()}`;
     if (notes[i].time === curDate) {
       bot.sendMessage(notes[i].userid, `НАПОМИНАНИЕ!!!!!!!!!!!! вы должны ${notes[i].text} сейчас.`);
