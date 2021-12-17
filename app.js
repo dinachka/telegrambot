@@ -7,25 +7,13 @@ const { gameOptions, againOptions } = require('./options');
 
 const chats = {};
 const bot = new TelegramApi(process.env.BOT_TOKEN, { polling: true });
-// function sendTime(time, msg, text) {
-//   new schedule.scheduleJob(
-//     {
-//       start: new Date(Date.now() + Number(time) * 1000 * 60),
-//       end: new Date(new Date(Date.now() + Number(time) * 1000 * 60 + 1000)),
-//       rule: '*/1 * * * * *',
-//     },
-//     (() => {
-//       bot.sendMessage(msg.chat.id, text);
-//     }),
-//   );
-// }
 
 const start = () => {
   bot.setMyCommands([
     { command: '/start', description: 'приветствие' },
     { command: '/info', description: 'информация' },
     { command: '/igra', description: 'игра' },
-    { command: '/send', description: 'добавить напоминание' },
+    { command: '/reminder', description: 'добавить напоминание' },
 
   ]);
   const startGame = async (chatId) => {
@@ -42,14 +30,12 @@ const start = () => {
     } catch (err) {
       return bot.sendMessage(chatId, 'произошла ошибка');
     }
-    // return bot.sendMessage(chatId, 'давай');
   };
   bot.on('message', (msg) => {
     const { reminderText } = msg;
     const { text } = msg;
     const chatId = msg.chat.id;
     const { username } = msg.chat;
-    // bot.sendMessage(chatId, `привет, ${username},ты написал мне ${text}`);
     console.log(msg);
 
     if (text === '/start') {
@@ -61,13 +47,9 @@ const start = () => {
     if (text === '/igra') {
       return startGame(chatId);
     }
-    if (text === '/send') {
-      // return bot.onText(/\/send/, (msgg) => {
-      //   sendTime(0.1, msgg, reminderText);
-      // });
-      return bot.sendMessage(chatId, `${username}, введите пожйлайста текст и время напоминания в формате [текст] в [часы:время]`);
+    if (text === '/reminder') {
+      bot.sendMessage(chatId, `${username}, введите пожалуйста текст и время напоминания. пример: "поехать на мальдивы в 13:59"`);
     }
-
   });
 
   bot.on('callback_query', (msg) => {
@@ -82,9 +64,6 @@ const start = () => {
       return bot.sendMessage(chatId, `поздравляю, ты угадал цифру ${chats[chatId]}`, againOptions);
     }
     return bot.sendMessage(chatId, `ты не угадал, я загадала цифру ${chats[chatId]}`, againOptions);
-
-    // bot.sendMessage(chatId, `ты выбрал цифру ${ data }`);
-    // console.log(msg);
   });
 };
 
