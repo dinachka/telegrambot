@@ -16,21 +16,21 @@ const start = () => {
     { command: '/reminder', description: 'добавить напоминание' },
 
   ]);
-  const startGame = async (chatId) => {
-    try {
-      await bot.sendMessage(chatId, 'сейчас я загадаю цифру от 0 до 9, а ты попробуй отгадать');
-    } catch (err) {
-      return bot.sendMessage(chatId, 'произошла ошибка');
-    }
+  // const startGame = async (chatId) => {
+  //   try {
+  //     await bot.sendMessage(chatId, 'сейчас я загадаю цифру от 0 до 9, а ты попробуй отгадать');
+  //   } catch (err) {
+  //     return bot.sendMessage(chatId, 'произошла ошибка');
+  //   }
 
-    try {
-      const randomNum = Math.floor(Math.random() * 10);
-      chats[chatId] = randomNum;
-      await bot.sendMessage(chatId, 'отгадывай', gameOptions);
-    } catch (err) {
-      return bot.sendMessage(chatId, 'произошла ошибка');
-    }
-  };
+  //   try {
+  //     const randomNum = Math.floor(Math.random() * 10);
+  //     chats[chatId] = randomNum;
+  //     await bot.sendMessage(chatId, 'отгадывай', gameOptions);
+  //   } catch (err) {
+  //     return bot.sendMessage(chatId, 'произошла ошибка');
+  //   }
+  // };
   bot.on('message', (msg) => {
     const { reminderText } = msg;
     const { text } = msg;
@@ -45,7 +45,9 @@ const start = () => {
       return bot.sendMessage(chatId, `приветик, ${username}`);
     }
     if (text === '/igra') {
-      return startGame(chatId);
+      return bot.sendMessage(chatId, `приветик, ${username}`);
+
+      // return startGame(chatId);
     }
     if (text === '/reminder') {
       bot.sendMessage(chatId, `${username}, введите пожалуйста текст и время напоминания. пример: "поехать на мальдивы в 13:59"`);
