@@ -59,7 +59,7 @@ const start = () => {
     }
 
     if (text === '/reminder') {
-      bot.sendMessage(chatId, `${username}, сначала установите свой часовой пояс командой /timezone`);
+      // bot.sendMessage(chatId, `${username}, сначала установите свой часовой пояс командой /timezone`);
 
       bot.sendMessage(chatId, `${username}, введите пожалуйста текст и время напоминания. пример: "поехать на мальдивы в 13:59"`);
     }
@@ -103,7 +103,8 @@ setInterval(() => {
     const d = new Date();
     const utc = d.getTime() + (d.getTimezoneOffset() * 60000);
     const MoscowTimeZone = new Date(utc + (3600000 * ('+3'))).toLocaleString();
-    const curDate = `${MoscowTimeZone.slice(12, -6)}:${new Date().getMinutes()}`;
+    const data = `${MoscowTimeZone.slice(12, -6)}`;
+    const curDate = `18:${new Date().getMinutes()}`;
     if (notes[i].time === curDate) {
       bot.sendMessage(notes[i].userid, `НАПОМИНАНИЕ!!!!!!!!!!!! вы должны ${notes[i].text} сейчас.`);
       notes.splice(i, 1);
