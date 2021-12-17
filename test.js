@@ -14,7 +14,7 @@ function calcTime(city, offset) {
   // create new Date object for different city
   // using supplied offset
   const nd = new Date(utc + (3600000 * ('+3')));
-// console.log(nd);
+  // console.log(nd);
   // return time as a string
   return `The local time in ${city} is ${nd.toLocaleString()}`;
 }
@@ -36,3 +36,19 @@ console.log(calcTime('London', '+3'));
 // The local time in Singapore is Monday, August 01, 2005 7:13:51 PM
 // The local time in London is Monday, August 01, 2005 12:13:51 PM
 // Hopefully, this script will save you some time the next time you sit down to code time zone calculations in your Web pages. Enjoy!
+
+const run = () => {
+  // setInterval(() => {
+    const d = new Date();
+    const utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+    return new Date(utc + (3600000 * ('+3'))).toLocaleString();
+    // return `${MoscowTimeZone}:${new Date().getMinutes()}`;
+
+    // if (notes[i].time === curDate) {
+    //   bot.sendMessage(notes[i].userid, `НАПОМИНАНИЕ!!!!!!!!!!!! вы должны ${notes[i].text} сейчас.`);
+    //   notes.splice(i, 1);
+    // }
+  // }, 1000);
+};
+
+console.log(run());
