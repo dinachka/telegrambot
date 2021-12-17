@@ -100,11 +100,13 @@ bot.onText(/(.+) в (.+)/, (msg, match) => {
 
 setInterval(() => {
   for (let i = 0; i < notes.length; i++) {
-    const d = new Date();
-    const utc = d.getTime() + (d.getTimezoneOffset() * 60000);
-    const MoscowTimeZone = new Date(utc + (3600000 * ('+3'))).toLocaleString();
+    // const d = new Date();
+    // const utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+    // const MoscowTimeZone = new Date(utc + (3600000 * ('+3'))).toLocaleString();
+    const MoscowTimeZone = new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' });
+
     const data = `${MoscowTimeZone.slice(12, -6)}`;
-    const curDate = `18:${new Date().getMinutes()}`;
+    const curDate = `${data}:${new Date().getMinutes()}`;
     if (notes[i].time === curDate) {
       bot.sendMessage(notes[i].userid, `НАПОМИНАНИЕ!!!!!!!!!!!! вы должны ${notes[i].text} сейчас.`);
       notes.splice(i, 1);

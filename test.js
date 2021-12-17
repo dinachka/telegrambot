@@ -53,3 +53,6 @@ const run = () => {
 };
 
 console.log(run());
+
+const str = new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' });
+console.log(str);
