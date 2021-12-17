@@ -103,9 +103,9 @@ setInterval(() => {
     // const d = new Date();
     // const utc = d.getTime() + (d.getTimezoneOffset() * 60000);
     // const MoscowTimeZone = new Date(utc + (3600000 * ('+3'))).toLocaleString();
-    const MoscowTimeZone = new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' });
+    const MoscowTimeZone = new Date().toLocaleString('ru-RU', { hour12: false }, { timeZone: 'Europe/Moscow' });
 
-    const data = `${MoscowTimeZone.slice(12, -6)}`;
+    const data = Number(`${MoscowTimeZone.slice(12, -6)}`) + 3;
     const curDate = `${data}:${new Date().getMinutes()}`;
     if (notes[i].time === curDate) {
       bot.sendMessage(notes[i].userid, `НАПОМИНАНИЕ!!!!!!!!!!!! вы должны ${notes[i].text} сейчас.`);
