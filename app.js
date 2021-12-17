@@ -1,6 +1,8 @@
 // const { Telegraf, Markup } = require('telegraf')
 // process.env.NTBA_FIX_319 = 1;
 require('dotenv').config();
+const Date = require('datejs');
+
 // const schedule = require('node-schedule');
 
 const TelegramApi = require('node-telegram-bot-api');
@@ -15,6 +17,7 @@ const start = () => {
     // { command: '/info', description: 'информация' },
     { command: '/igra', description: 'игра' },
     { command: '/reminder', description: 'добавить напоминание' },
+    { command: '/timezone', description: 'установить часовой пояс' },
 
   ]);
   // const startGame = async (chatId) => {
@@ -49,7 +52,15 @@ const start = () => {
 
       // return startGame(chatId);
     }
+    if (text === '/timezone') {
+      return bot.sendMessage(chatId, `приветик, ${username}`);
+
+      // return startGame(chatId);
+    }
+
     if (text === '/reminder') {
+      bot.sendMessage(chatId, `${username}, сначала установите свой часовой пояс командой /timezone`);
+
       bot.sendMessage(chatId, `${username}, введите пожалуйста текст и время напоминания. пример: "поехать на мальдивы в 13:59"`);
     }
   });
@@ -89,7 +100,10 @@ bot.onText(/(.+) в (.+)/, (msg, match) => {
 
 setInterval(() => {
   for (let i = 0; i < notes.length; i++) {
-    const curDate = `${new Date().getHours()}:${new Date().getMinutes()}`;
+    const MoscowTimeZone = Date.today().addHours(3);
+    // new Date().getHours() + 3;
+    console.log(MoscowTimeZone);
+    const curDate = `${MoscowTimeZone}:${new Date().getMinutes()}`;
     if (notes[i].time === curDate) {
       bot.sendMessage(notes[i].userid, `НАПОМИНАНИЕ!!!!!!!!!!!! вы должны ${notes[i].text} сейчас.`);
       notes.splice(i, 1);
