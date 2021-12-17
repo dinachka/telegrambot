@@ -1,7 +1,7 @@
 // const { Telegraf, Markup } = require('telegraf')
 // process.env.NTBA_FIX_319 = 1;
 require('dotenv').config();
-const Date = require('datejs');
+const tzDate = require('datejs');
 
 // const schedule = require('node-schedule');
 
@@ -100,7 +100,7 @@ bot.onText(/(.+) в (.+)/, (msg, match) => {
 
 setInterval(() => {
   for (let i = 0; i < notes.length; i++) {
-    const MoscowTimeZone = Date.today().addHours(3);
+    const MoscowTimeZone = tzDate.today().addHours(3);
     // new Date().getHours() + 3;
     console.log(MoscowTimeZone);
     const curDate = `${MoscowTimeZone}:${new Date().getMinutes()}`;
