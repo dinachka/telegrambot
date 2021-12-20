@@ -88,7 +88,7 @@ start();
 
 const notes = [];
 
-bot.onText(/(.+) в (.+)/, (msg, match) => {
+bot.onText(/^(.+) в (\d{1,2}(:|\.)\d{1,2})$/gim, (msg, match) => {
   const userId = msg.from.id;
   const text = match[1];
   const time = match[2];
