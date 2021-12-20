@@ -92,23 +92,18 @@ bot.onText(/(.+) в (.+)/, (msg, match) => {
   const userId = msg.from.id;
   const text = match[1];
   const time = match[2];
-  const time2 = Number(time.slice(0, 2)) - 3;
 
-  notes.push({ userid: userId, time2, text });
+  notes.push({ userid: userId, time, text });
 
-  bot.sendMessage(userId, `Отлично! Я обязательно напомню ${text} в ${time2}`);
+  bot.sendMessage(userId, `Отлично! Я обязательно напомню ${text} в ${time}`);
 });
 
 setInterval(() => {
   for (let i = 0; i < notes.length; i++) {
-    // const d = new Date();
-    // const utc = d.getTime() + (d.getTimezoneOffset() * 60000);
-    // const MoscowTimeZone = new Date(utc + (3600000 * ('+3'))).toLocaleString();
-    // const MoscowTimeZone = new Date().toLocaleString('ru-RU', { hour12: false }, { timeZone: 'Europe/Moscow' });
-
-    // const data = Number(`${MoscowTimeZone.slice(12, -6)}`) + 3;
-    const curDate = `${new Date().getHours()}:${new Date().getMinutes()}`;
-    if (notes[i].time2 === curDate) {
+    const UTCtimeZone = new Date().toLocaleString('ru-RU', { hour12: false }, { timeZone: 'UTC' });
+    const hour = Number(`${UTCtimeZone.slice(12, -6)}`) + 3;
+    const curDate = `${hour}:${new Date().getMinutes()}`;
+    if (notes[i].time == curDate) {
       bot.sendMessage(notes[i].userid, `НАПОМИНАНИЕ!!!!!!!!!!!! вы должны ${notes[i].text} сейчас.`);
       notes.splice(i, 1);
     }
