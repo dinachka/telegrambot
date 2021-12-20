@@ -98,26 +98,26 @@ bot.onText(/(.+) в (.+)/, (msg, match) => {
   bot.sendMessage(userId, `Отлично! Я обязательно напомню ${text} в ${time}`);
 });
 
-// setInterval(() => {
-//   for (let i = 0; i < notes.length; i++) {
-//     const UTCtimeZone = new Date().toLocaleString('ru-RU', { hour12: false }, { timeZone: 'UTC' });
-//     const hour = Number(`${UTCtimeZone.slice(12, -6)}`) + 3;
-//     const curDate = `${hour}:${new Date().getMinutes()}`;
-//     if (notes[i].time == curDate) {
-//       bot.sendMessage(notes[i].userid, `НАПОМИНАНИЕ!!!!!!!!!!!! вы должны ${notes[i].text} сейчас.`);
-//       notes.splice(i, 1);
-//     }
-//   }
-// }, 1000);
-
 setInterval(() => {
-  notes.forEach((el) => {
+  for (let i = 0; i < notes.length; i++) {
     const UTCtimeZone = new Date().toLocaleString('ru-RU', { hour12: false }, { timeZone: 'UTC' });
     const hour = Number(`${UTCtimeZone.slice(12, -6)}`) + 3;
     const curDate = `${hour}:${new Date().getMinutes()}`;
-    if (el.time == curDate) {
-      bot.sendMessage(el.userid, `НАПОМИНАНИЕ!!!!!!!!!!!! вы должны ${el.text} сейчас.`);
-      notes.splice(notes.indexOf(el), 1);
+    if (notes[i].time == curDate) {
+      bot.sendMessage(notes[i].userid, `НАПОМИНАНИЕ!!!!!!!!!!!! вы должны ${notes[i].text} сейчас.`);
+      notes.splice(i, 1);
     }
-  });
+  }
 }, 1000);
+
+// setInterval(() => {
+//   notes.forEach((el) => {
+//     const UTCtimeZone = new Date().toLocaleString('ru-RU', { hour12: false }, { timeZone: 'UTC' });
+//     const hour = Number(`${UTCtimeZone.slice(12, -6)}`) + 3;
+//     const curDate = `${hour}:${new Date().getMinutes()}`;
+//     if (el.time == curDate) {
+//       bot.sendMessage(el.userid, `НАПОМИНАНИЕ!!!!!!!!!!!! вы должны ${el.text} сейчас.`);
+//       notes.splice(notes.indexOf(el), 1);
+//     }
+//   });
+// }, 1000);
