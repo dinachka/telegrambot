@@ -90,7 +90,7 @@ const notes = [];
 
 bot.onText(/^(.+) (\d{1,2}(:|\.)\d{1,2})$/gim, (msg, match) => {
   const userId = msg.from.id;
-  const text = match[1].slice(0, -3);
+  const text = match[1].slice(0, -2);
   const time = match[2];
 
   notes.push({ userid: userId, time, text });
